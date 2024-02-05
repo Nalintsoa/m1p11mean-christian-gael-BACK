@@ -1,0 +1,11 @@
+{
+  "name": "m1p11mean-christian-gael",
+  "version": "1.0.0",
+  "description": "m1p11mean-christian-gael-BACK",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Christian-Gael",
+  "license": "ISC"
+}
