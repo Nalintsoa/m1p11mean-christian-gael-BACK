@@ -2,14 +2,15 @@
   "name": "m1p11mean-christian-gael",
   "version": "1.0.0",
   "description": "m1p11mean-christian-gael-BACK",
-  "main": "index.js",
+  "main": "src/modules/app/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./index.js"
+    "start": "nodemon ./src/modules/app/index.js"
   },
   "author": "Christian-Gael",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.4.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
