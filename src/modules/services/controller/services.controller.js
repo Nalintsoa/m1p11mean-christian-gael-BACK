@@ -8,8 +8,8 @@ class ServiceController {
     createService = async (req, res) => {
         const data = req.body;
         try {
-            await this.serviceService.createService(data);
-            return res.status(200).send("success");
+            const service = await this.serviceService.createService(data);
+            return res.status(200).send(service);
 
         } catch (error) {
             console.log(error);

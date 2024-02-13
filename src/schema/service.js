@@ -16,6 +16,9 @@ const ServiceSchema = new Schema({
     },
     commission: {
         type: Number
+    },
+    description: {
+        type: String
     }
 
 });
