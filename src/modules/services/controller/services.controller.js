@@ -8,8 +8,8 @@ class ServiceController {
     createService = async (req, res) => {
         const data = req.body;
         try {
-            await this.serviceService.createService(data);
-            return res.status(200).send("success");
+            const service = await this.serviceService.createService(data);
+            return res.status(200).send(service);
 
         } catch (error) {
             console.log(error);
@@ -36,19 +36,21 @@ class ServiceController {
             return res.status(200).send(service);
         } catch (error) {
             console.log(error);
-            return res.status(500).send("Une erreur s' est survenue");
+            return res.status(500).send("Une erreur est survenue");
         }
 
     }
 
     updateService = async (req, res) => {
         const data = req.body;
+        const { _id } = data;
+        delete data._id;
         try {
-            await this.serviceService.updateService(data);
-            return res.status(200).send("success");
+            const update = await this.serviceService.updateService({ _id }, data);
+            return res.status(200).send(update);
         } catch (error) {
             console.log(error);
-            return res.status(500).send("Une erreur s' est survenue");
+            return res.status(500).send("Une erreur est survenue");
         }
 
     }
@@ -60,7 +62,7 @@ class ServiceController {
             return res.status(200).send("success");
         } catch (error) {
             console.log(error);
-            return res.status(500).send("Une erreur s' est survenue");
+            return res.status(500).send("Une erreur est survenue");
         }
 
     }
