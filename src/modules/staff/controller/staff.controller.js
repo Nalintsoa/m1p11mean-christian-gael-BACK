@@ -9,9 +9,9 @@ class StaffController {
 		const data = req.body;
 		try {
 			const result = await this.staffService.createStaff(data);
-			return res.status(200).send({result, message: 'Personnel ajouté avec succès'});
+			res.status(200).send({result, message: 'Personnel ajouté avec succès'});
 		} catch (err) {
-			res.send(500).send("Une erreur est survenue");
+			res.status(500).send("Une erreur est survenue");
 		}
 	}
 
@@ -20,7 +20,7 @@ class StaffController {
 			const result = await this.staffService.getAllStaff();
 			return res.status(200).send(result);
 		} catch (err) {
-			res.send(500).send('Impossible de lister les personnels');
+			res.status(500).send('Impossible de lister les personnels');
 		}
 	}
 
@@ -30,7 +30,7 @@ class StaffController {
 			const result = await this.staffService.updateStaff(data.id, data);
 			return res.status(200).send(result);
 		} catch (err) {
-			res.send(500).send('Impossible de mettre à jour le personnel choisi');
+			res.status(500).send('Impossible de mettre à jour le personnel choisi');
 		}
 	}
 
@@ -40,7 +40,7 @@ class StaffController {
 			const result = await this.staffService.deleteStaff(data.id);
 			return res.status(200).send(result);
 		} catch (err) {
-			res.send(500).send('Impossible de mettre à jour le personnel choisi');
+			res.status(500).send('Impossible de mettre à jour le personnel choisi');
 		}
 	}
 }

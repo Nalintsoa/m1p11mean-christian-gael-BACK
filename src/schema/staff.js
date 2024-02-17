@@ -12,6 +12,7 @@ const StaffSchema = new Schema({
   email: {
     type: String,
     required: true,
+    unique:true,
   },
   phoneNumber: {
     type: Number,
@@ -44,6 +45,10 @@ const StaffSchema = new Schema({
   role: {
     type: String,
     default: "employee"
+  },
+  password: {
+    type: String,
+    required: true
   }
 });
 
