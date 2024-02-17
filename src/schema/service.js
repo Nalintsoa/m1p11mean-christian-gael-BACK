@@ -19,6 +19,10 @@ const ServiceSchema = new Schema({
     },
     description: {
         type: String
+    },
+    path: {
+        type: String,
+        required: true
     }
 
 });
