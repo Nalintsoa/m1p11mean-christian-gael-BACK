@@ -20,6 +20,9 @@ const ServiceSchema = new Schema({
     description: {
         type: String
     },
+    category: {
+        type: String
+    },
     path: {
         type: String,
         required: true
