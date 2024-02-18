@@ -5,7 +5,10 @@ const routes = Router();
 
 const rdvController = new RdvController();
 
-routes.get("/checkDispo", rdvController.checkDispo)
-routes.post("/", rdvController.createRDV)
+routes.post("/", rdvController.createRDV);
+routes.get("/checkDispo", rdvController.checkDispo);
+routes.get("/getHisto", rdvController.getHistoRDV);
+
+
 
 module.exports = routes;
