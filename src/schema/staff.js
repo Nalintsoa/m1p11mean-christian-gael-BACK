@@ -15,7 +15,7 @@ const StaffSchema = new Schema({
     unique:true,
   },
   phoneNumber: {
-    type: Number,
+    type: String,
     required: true,
   },
   cinNumber: {
@@ -34,10 +34,10 @@ const StaffSchema = new Schema({
     type: String,
     required: true,
   },
-  skills: {
-    type: [String],
-    required: true,
-  },
+  // skills: {
+  //   type: [String],
+  //   required: true,
+  // },
   speciality: {
     type: String,
     required: true,
