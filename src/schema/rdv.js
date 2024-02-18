@@ -18,6 +18,10 @@ const rdvSchema = new Schema({
     date: {
         type: String,
     },
+    dateBook: {
+        type: Date,
+        default: new Date()
+    },
     startHour: {
         type: Number,
     },

@@ -8,6 +8,11 @@ class RdvService {
         return response
     }
 
+    getHistoRdv = async () => {
+        const response = await RDV.find().populate("service").populate("employee");
+        return response;
+    }
+
     checkDispo = async (data) => {
         const { date, category } = data;
         const employees = await Staff.find({ speciality: category, role: 'employee' });
@@ -15,8 +20,6 @@ class RdvService {
         let formatedArray = [];
 
         for (let i = 0; i < employees.length; i++) {
-            const empHStart = employees[i].startHour;
-            const empHEnd = Number(employees[i].endHour);
             const rdv = await RDV.find({ date, employee: employees[i]._id });
             const obj = {};
 
