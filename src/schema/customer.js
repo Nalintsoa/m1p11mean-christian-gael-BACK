@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 const { model, Schema } = mongoose;
 
 const CustomerSchema = new Schema({
-	username: {
+	pseudo: {
 		type: String,
 		required: true,
 	},
-	mail: {
+	email: {
 		type: String,
 		required: true,
 		unique: true

@@ -11,6 +11,7 @@ class AuthController {
 		try {
 			const { staff, token, logged, message } = await this.authService.staffLogin(email, password);
 
+			// TODO use .env
 			if (logged) {
 				res.cookie("jwt_token", token, {
 					maxAge: 1 * 60 * 60 * 1000,
