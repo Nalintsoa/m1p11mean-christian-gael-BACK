@@ -30,9 +30,9 @@ class ServiceController {
     }
 
     getService = async (req, res) => {
-        const data = req.body;
+        const _id = req.params.id
         try {
-            const service = await this.serviceService.getService(data);
+            const service = await this.serviceService.getService({ _id });
             return res.status(200).send(service);
         } catch (error) {
             console.log(error);

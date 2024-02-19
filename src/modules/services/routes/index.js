@@ -8,7 +8,7 @@ const serviceController = new ServiceController();
 
 router.get("/", serviceController.getAllService);
 router.post("/", serviceController.createService);
-router.get("/one", serviceController.getService);
+router.get("/:id", serviceController.getService);
 router.patch("/", serviceController.updateService);
 router.delete("/", serviceController.deleteService);
 
