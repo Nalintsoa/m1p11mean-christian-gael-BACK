@@ -10,7 +10,6 @@ class StaffService {
 				...data,
 				password: hashedPassword
 			});
-			console.log(staff);
 			const response = await staff.save();
 			return response;
 		} catch (err) {
@@ -41,6 +40,11 @@ class StaffService {
 
 	deleteStaff = async (id) => {
 		const response = await Staff.findByIdAndDelete(id);
+		return response;
+	}
+
+	getStaff = async (id) => {
+		const response = await Staff.findById(id);
 		return response;
 	}
 }

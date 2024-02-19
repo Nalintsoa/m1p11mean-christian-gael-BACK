@@ -1,32 +1,25 @@
 const jwt = require("jsonwebtoken");
 
-const verifyAccessToken = (token) => {
-  const secret = 'secret';
-
-  try {
-    const decoded = jwt.verify(token, secret);
-    return { success: true, data: decoded };
-  } catch (error) {
-    return { success: false, error: error.message };
-  }
-}
-
-const authenticateToken = (req, res, next) => {
-	const token = req.cookies.jwt_token;
-	// const authHeader = req.headers['authorization'];
-	// const token = authHeader && authHeader.split(' ')[1];
+verifyToken = (req, res, next) => {
+	let token = req.headers["x-access-token"];
+	const secret = 'secret';
+	// TODO use dotenv
 	if (!token) {
-		return res.sendStatus(401);
+	  return res.status(403).send({ message: "No token provided!" });
 	}
+  
+	jwt.verify(token, secret, (err, decoded) => {
+		if (err) {
+			return res.status(401).send({
+			message: "Unauthorized!",
+			});
+		}
+	
+		req.userId = decoded.id;
+		next();
+	});
+  };
 
-	const result = verifyAccessToken(token);
-
-	if (!result.success) {
-		return res.status(403).json({ error: result.error });
-	}
-
-	req.user = result.data;
-	next();
-}
-
-module.exports = authenticateToken;
+module.exports = {
+	verifyToken,
+};

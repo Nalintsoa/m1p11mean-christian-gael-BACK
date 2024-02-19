@@ -43,6 +43,16 @@ class StaffController {
 			res.status(500).send('Impossible de mettre à jour le personnel choisi');
 		}
 	}
+
+	getStaff = async (req, res) => {
+		const { id } = req.params;
+		try{
+			const result = await this.staffService.getStaff(id);
+			return res.status(200).send(result);
+		} catch (err) {
+			res.status(500).send("Impossible d'avoir les informations du personnel");
+		}
+	}
 }
 
 module.exports = StaffController;

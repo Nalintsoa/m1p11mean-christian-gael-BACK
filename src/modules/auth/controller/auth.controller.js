@@ -11,26 +11,18 @@ class AuthController {
 		try {
 			const { staff, token, logged, message } = await this.authService.staffLogin(email, password);
 
+			// TODO use .env
 			if (logged) {
 				res.cookie("jwt_token", token, {
-					maxAge: 24 * 60 * 60 * 1000,
+					maxAge: 1 * 60 * 60 * 1000,
 					sameSite: 'Lax',
 					secure: false
 				});
 
-				res.cookie('leeee', token, {
-					maxAge: 24 * 60 * 60 * 1000,
-					sameSite: 'None',
-					secure: false,
-					httpOnly: false
-				});
-
-				res.cookie('leo', 'be');
-				// req.session.token = token;
-
 				res.status(200).send({
 					message: 'logged in',
-					staff
+					staff,
+					token
 				})
 			} else {
 				console.log('message', message);
@@ -44,7 +36,6 @@ class AuthController {
 	}
 
 	staffLogout = async (req, res) => {
-		console.log('ato');
 		res.cookie("jwt_token", "", {maxAge: 0});
 		res.status(200).send({ message: 'logged out' });
 	}
