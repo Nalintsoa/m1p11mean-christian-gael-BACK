@@ -2,10 +2,8 @@ const { Schema, model } = require('mongoose');
 
 const rdvSchema = new Schema({
     customer: {
-        type: String,
-        default: 'ClientTest'
-        // type: Schema.Types.ObjectId,
-        // ref: 'Customer'
+        type: Schema.Types.ObjectId,
+        ref: 'Customer'
     },
     employee: {
         type: Schema.Types.ObjectId,
