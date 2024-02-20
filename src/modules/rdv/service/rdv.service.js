@@ -8,8 +8,8 @@ class RdvService {
         return response
     }
 
-    getHistoRdv = async () => {
-        const response = await RDV.find().populate("service").populate("employee");
+    getHistoRdv = async (data) => {
+        const response = await RDV.find(data).sort({ dateBook: -1 }).populate("service").populate("employee");
         return response;
     }
 

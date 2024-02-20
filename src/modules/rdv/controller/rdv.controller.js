@@ -17,8 +17,9 @@ class RdvController {
 
     createRDV = async (req, res) => {
         const data = req.body;
+        const customer = req.userId;
         try {
-            const response = await this.rdvService.createRdv(data);
+            const response = await this.rdvService.createRdv({ ...data, customer });
             res.status(200).send(response);
         } catch (error) {
             res.status(500).send(error);
@@ -26,8 +27,9 @@ class RdvController {
     }
 
     getHistoRDV = async (req, res) => {
+        const customer = req.userId;
         try {
-            const response = await this.rdvService.getHistoRdv();
+            const response = await this.rdvService.getHistoRdv({ customer });
             res.status(200).send(response);
         } catch (error) {
             res.status(500).send(error);
