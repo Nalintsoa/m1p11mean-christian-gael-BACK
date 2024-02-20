@@ -6,6 +6,7 @@ const cors = require("cors");
 const routes = require("@modules/app/routes");
 const cookieParser = require("cookie-parser");
 const { Server } = require('socket.io');
+const ServiceService = require("../services/service/services.service");
 
 dotenv.config();
 const app = express();
@@ -14,11 +15,11 @@ const PORT = process.env.PORT;
 
 app.use(cors({
 	credentials: true,
-    exposedHeaders: ["token"],
-    origin: "http://localhost:4200",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    preflightContinue: false,
-  }));
+	exposedHeaders: ["token"],
+	origin: "http://localhost:4200",
+	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+	preflightContinue: false,
+}));
 
 app.use(express.json());
 const server = app.listen(PORT, () => {
@@ -27,15 +28,23 @@ const server = app.listen(PORT, () => {
 
 const io = new Server(server, {
 	cors: {
-	  origin: "*",
+		origin: "*",
 	},
-  });
-  
+});
+
 app.set("socket_io", io);
 
-io.on("connection", async (socket) => {
-	console.log('Socket: client connecté');
+const serviceService = new ServiceService();
+
+io.on("connection", (socket) => {
+	socket.on("specialOffer", (data) => {
+		const notification = serviceService.notifySpecialOffer(data);
+		socket.emit("notifySpecialOffer", { notification })
+
+	})
+
 })
+
 
 mongoose
 	.connect(process.env.MONGO_URI)
@@ -46,16 +55,17 @@ mongoose
 		console.error('Database connection failed');
 	});
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
 	res.header(
 		"Access-Control-Allow-Headers",
 		"x-access-token, Origin, Content-Type, Accept"
 	);
 	next();
-	});
+});
 
 app.use("/", routes);
 
 app.use("/uploads", express.static("uploads"));
+
 
 

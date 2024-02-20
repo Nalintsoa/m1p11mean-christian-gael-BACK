@@ -26,6 +26,21 @@ const ServiceSchema = new Schema({
     path: {
         type: String,
         required: true
+    },
+    specialOffer: {
+        type: Boolean
+    },
+    startOffer: {
+        type: Date
+    },
+    endOffer: {
+        type: Date
+    },
+    oldPrice: {
+        type: Number
+    },
+    seenOffer: {
+        type: Boolean
     }
 
 });
