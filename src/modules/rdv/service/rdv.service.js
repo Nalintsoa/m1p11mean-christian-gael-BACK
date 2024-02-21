@@ -48,10 +48,18 @@ class RdvService {
         }
 
         return formatedArray;
-
-
     }
 
+    getRdvWithCustomerAlert = async (idCustomer) => {
+        try {
+            const response = await RDV.find({ customer: idCustomer })
+              .populate("service")
+              .populate("employee");
+            return response;
+        } catch(err) {
+            console.log(err);
+        }
+    }
 }
 
 module.exports = RdvService;

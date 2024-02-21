@@ -20,6 +20,7 @@ class AuthService {
             }
         }
 
+        // TODO use .env
         const { _id } = staff.toJSON();
         const token = await jwt.sign({ _id, username: staff.name }, 'secret', {expiresIn: 60 * 60});
 
