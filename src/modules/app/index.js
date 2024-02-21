@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const routes = require("@modules/app/routes");
 const cookieParser = require("cookie-parser");
+const { Server } = require('socket.io');
 
 dotenv.config();
 const app = express();
@@ -20,9 +21,21 @@ app.use(cors({
   }));
 
 app.use(express.json());
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
 	console.log(`The server is active on port ${PORT}`);
 });
+
+const io = new Server(server, {
+	cors: {
+	  origin: "*",
+	},
+  });
+  
+app.set("socket_io", io);
+
+io.on("connection", async (socket) => {
+	console.log('Socket: client connecté');
+})
 
 mongoose
 	.connect(process.env.MONGO_URI)

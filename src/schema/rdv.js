@@ -26,6 +26,10 @@ const rdvSchema = new Schema({
     endHour: {
         type: Number
     },
+    rappel: {
+        type: Date,
+        required:false
+    }
 
 });
 
