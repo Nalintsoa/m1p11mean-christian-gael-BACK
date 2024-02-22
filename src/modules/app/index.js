@@ -7,6 +7,7 @@ const routes = require("@modules/app/routes");
 const cookieParser = require("cookie-parser");
 const { Server } = require('socket.io');
 
+
 dotenv.config();
 const app = express();
 app.use(cookieParser());
@@ -34,11 +35,11 @@ const io = new Server(server, {
 app.set("socket_io", io);
 
 io.on("connection", (socket) => {
-	// socket.on("specialOffer", async (data) => {
-	// 	const notification = await serviceService.notifySpecialOffer(data);
-	// 	io.emit("notifySpecialOffer", notification)
 
-	// })
+	socket.on("getNotifications", async (data) => {
+
+
+	})
 
 })
 

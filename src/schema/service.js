@@ -28,7 +28,8 @@ const ServiceSchema = new Schema({
         required: true
     },
     specialOffer: {
-        type: Boolean
+        type: Boolean,
+        default: false
     },
     startOffer: {
         type: Date
@@ -36,11 +37,14 @@ const ServiceSchema = new Schema({
     endOffer: {
         type: Date
     },
-    oldPrice: {
+    priceOffer: {
         type: Number
     },
     seenOffer: {
-        type: Boolean
+        type: [String]
+    },
+    dateOffer: {
+        type: Date
     }
 
 });

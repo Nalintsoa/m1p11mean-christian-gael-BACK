@@ -42,21 +42,17 @@ class ServiceController {
     }
 
     updateService = async (req, res) => {
-        const data = req.body;
-        const { _id, oldPrice, price } = data;
+        let data = req.body;
+        const { _id, priceOffer, specialOffer } = data;
         const socket = req.app.get('socket_io');
         delete data._id;
         try {
-            console.log(_id)
-            if (oldPrice && oldPrice !== price) {
-                const notification = await this.serviceService.notifySpecialOffer({ _id }, data);
-                socket.emit("notifySpecialOffer", notification)
-                delete data.endOffer;
-                delete data.startOffer;
-                delete data.oldPrice;
-            }
-            else {
-                await this.serviceService.updateService({ _id }, data);
+            specialOffer && (data = { ...data, dateOffer: new Date() });
+            await this.serviceService.updateService({ _id }, data);
+            if (priceOffer && specialOffer) {
+                const notifications = await this.serviceService.notifySpecialOffer();
+                if (notifications.length)
+                    socket.emit("notifySpecialOffer", notifications)
             }
 
             res.status(200).send({ update: 'success' });
