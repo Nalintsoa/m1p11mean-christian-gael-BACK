@@ -6,7 +6,6 @@ const cors = require("cors");
 const routes = require("@modules/app/routes");
 const cookieParser = require("cookie-parser");
 const { Server } = require('socket.io');
-const ServiceService = require("../services/service/services.service");
 
 dotenv.config();
 const app = express();
@@ -34,14 +33,12 @@ const io = new Server(server, {
 
 app.set("socket_io", io);
 
-const serviceService = new ServiceService();
-
 io.on("connection", (socket) => {
-	socket.on("specialOffer", (data) => {
-		const notification = serviceService.notifySpecialOffer(data);
-		socket.emit("notifySpecialOffer", notification)
+	// socket.on("specialOffer", async (data) => {
+	// 	const notification = await serviceService.notifySpecialOffer(data);
+	// 	io.emit("notifySpecialOffer", notification)
 
-	})
+	// })
 
 })
 

@@ -27,25 +27,21 @@ class ServiceService {
         return response;
     }
 
-    notifySpecialOffer = async (data) => {
-        const { _id, oldPrice } = data;
+    notifySpecialOffer = async (filter, data) => {
 
-        if (_id) {
+        // if (_id) {
 
-            const service = await Service.findOne({ _id });
-            console.log('service', service)
-            console.log("oldPrice", oldPrice)
-            if (oldPrice !== service.price) {
-                await Service.updateOne({ _id }, { oldPrice })
-                const serviceSend = await Service.findOne({ _id });
-                return serviceSend;
-            }
+        console.log("data", data)
 
-        } else {
-            const lastCreated = await Service.findOne({ specialOffer: true }).sort({ _id: -1 });
+        await Service.updateOne(filter, data)
+        const serviceSend = await Service.findOne({ _id: filter._id });
+        return serviceSend;
 
-            return lastCreated;
-        }
+        // } else {
+        //     const lastCreated = await Service.findOne({ specialOffer: true }).sort({ _id: -1 });
+
+        //     return lastCreated;
+        // }
 
     }
 
