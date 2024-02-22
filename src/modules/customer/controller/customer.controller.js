@@ -7,6 +7,16 @@ class CustomerController {
         this.rdvService = new RdvService();
     }
 
+    getCustomer = async (req, res) => {
+        const { id } = req.params;
+        try {
+            const result = await this.customerService.getCustomer(id);
+            res.status(200).send(result);
+        } catch {
+            res.status(500).send("Failed to find customer");
+        }
+    }
+
     register = async (req, res) => {
         const data = req.body;
         try {
@@ -42,6 +52,7 @@ class CustomerController {
                     });
                 }
 
+                // TODO using socket
                 if (alertArray.length > 0) {
                     for (let i = 0; i < alertArray.length; i++){
                         const minute = alertArray[i].rappel.getMinutes();
@@ -60,7 +71,6 @@ class CustomerController {
                         task.start();
                     }
                 }
-
                 res.status(200).send({
                     message: 'logged in',
                     customer,
@@ -80,6 +90,17 @@ class CustomerController {
     customerLogout = async (req, res) => {
         res.cookie("client_token", "", {maxAge: 0});
 		res.status(200).send({ message: 'logged out' });
+    }
+
+    addOrRemoveServiceToPreferences = async (req, res) => {
+        try {
+            const {customer, service} = req.body;
+            const result = await this.customerService.addOrRemoveServiceToPreferences(customer, service);
+            res.status(200).send({result ,message: "Preferences updated"});
+        } catch(error){
+            console.log(error);
+            res.status(500).send('Failed to add to preferences');
+        }
     }
 }
 
