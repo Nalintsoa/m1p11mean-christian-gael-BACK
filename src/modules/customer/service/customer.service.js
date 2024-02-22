@@ -1,7 +1,16 @@
 const bcrypt = require('bcryptjs');
 const Customer = require('../../../schema/customer');
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 class CustomerService {
+    getCustomer = async (idCustomer) => {
+        try {
+            const result = await Customer.findById(idCustomer);
+            return result;
+        } catch (err) {
+            console.log(err);
+        }
+    }
     register = async (data) => {
         try {
             const { pseudo, email, address, phoneNumber, password } = data;
@@ -46,6 +55,29 @@ class CustomerService {
             logged: true,
             token,
             customer
+        }
+    }
+
+    addOrRemoveServiceToPreferences = async (idCustomer, service) => {
+        try {
+            const addOne = await Customer.findById(idCustomer).select('preferences');
+            console.log(addOne);
+
+            let prefs = addOne.preferences || [];
+            const serviceId = new mongoose.Types.ObjectId(service);
+
+            if (prefs.length === 0 || !prefs.includes(serviceId)) {
+                prefs.push(serviceId);
+            } else {
+                prefs = prefs.filter((item) => {
+                    console.log(item.toString() === service);
+                    return item.toString() !== service
+                });
+            }
+            const result = await Customer.findByIdAndUpdate(idCustomer, { preferences: prefs }).lean();
+            return {...result, preferences: prefs};
+        } catch (err) {
+            console.log(err);
         }
     }
 }

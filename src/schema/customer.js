@@ -22,6 +22,10 @@ const CustomerSchema = new Schema({
 	password: {
 		type: String,
 		required: true
+	},
+	preferences: {
+		type: [Schema.Types.ObjectId],
+		default: []
 	}
 });
 
