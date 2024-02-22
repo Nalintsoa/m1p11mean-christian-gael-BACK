@@ -26,6 +26,25 @@ const ServiceSchema = new Schema({
     path: {
         type: String,
         required: true
+    },
+    specialOffer: {
+        type: Boolean,
+        default: false
+    },
+    startOffer: {
+        type: Date
+    },
+    endOffer: {
+        type: Date
+    },
+    priceOffer: {
+        type: Number
+    },
+    seenOffer: {
+        type: [String]
+    },
+    dateOffer: {
+        type: Date
     }
 
 });

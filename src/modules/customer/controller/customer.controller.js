@@ -1,8 +1,9 @@
 const CustomerService = require("@modules/customer/service/customer.service");
 const cron = require('node-cron');
 const RdvService = require("../../rdv/service/rdv.service");
+const ServiceService = require("../../services/service/services.service")
 class CustomerController {
-    constructor(){
+    constructor() {
         this.customerService = new CustomerService();
         this.rdvService = new RdvService();
     }
@@ -20,8 +21,8 @@ class CustomerController {
     register = async (req, res) => {
         const data = req.body;
         try {
-        const result = await this.customerService.register(data);
-        res.status(200).send({result, message: 'Client ajouté'});
+            const result = await this.customerService.register(data);
+            res.status(200).send({ result, message: 'Client ajouté' });
         } catch (error) {
             res.status(500).send("Impossible d'enregistrer le client")
         }
@@ -30,7 +31,7 @@ class CustomerController {
     customerLogin = async (req, res) => {
         const { email, password } = req.body;
         const socketIo = req.app.get("socket_io");
-        try{
+        try {
             const { customer, token, logged, message } = await this.customerService.customerLogin(email, password);
 
             // TODO use .env
@@ -54,7 +55,7 @@ class CustomerController {
 
                 // TODO using socket
                 if (alertArray.length > 0) {
-                    for (let i = 0; i < alertArray.length; i++){
+                    for (let i = 0; i < alertArray.length; i++) {
                         const minute = alertArray[i].rappel.getMinutes();
                         const hour = alertArray[i].rappel.getHours();
                         const day = alertArray[i].rappel.getDate();
@@ -71,6 +72,13 @@ class CustomerController {
                         task.start();
                     }
                 }
+
+                // Notification when logged_in
+                const serviceService = new ServiceService();
+                const notification = await serviceService.notifySpecialOffer();
+                if (notification.length)
+                    socketIo.emit("notifySpecialOffer", notification);
+
                 res.status(200).send({
                     message: 'logged in',
                     customer,
@@ -88,16 +96,16 @@ class CustomerController {
     }
 
     customerLogout = async (req, res) => {
-        res.cookie("client_token", "", {maxAge: 0});
-		res.status(200).send({ message: 'logged out' });
+        res.cookie("client_token", "", { maxAge: 0 });
+        res.status(200).send({ message: 'logged out' });
     }
 
     addOrRemoveServiceToPreferences = async (req, res) => {
         try {
-            const {customer, service} = req.body;
+            const { customer, service } = req.body;
             const result = await this.customerService.addOrRemoveServiceToPreferences(customer, service);
-            res.status(200).send({result ,message: "Preferences updated"});
-        } catch(error){
+            res.status(200).send({ result, message: "Preferences updated" });
+        } catch (error) {
             console.log(error);
             res.status(500).send('Failed to add to preferences');
         }

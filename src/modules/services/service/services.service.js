@@ -1,4 +1,4 @@
-const Service = require("@schema/service");
+const Service = require("../../../schema/service");
 
 class ServiceService {
 
@@ -8,7 +8,7 @@ class ServiceService {
     }
 
     getAllService = async (filter) => {
-        const response = await Service.find(filter);
+        const response = await Service.find(filter).select({ dateOffer: 0 }).select({ seenOffer: 0 });
         return response;
     }
 
@@ -27,6 +27,21 @@ class ServiceService {
         return response;
     }
 
+    notifySpecialOffer = async (userId) => {
+        const specialOffers = await Service.find({
+            specialOffer: true,
+            $or: [
+                { seenOffer: { $nin: [userId] } },
+                { seenOffer: { $exists: false } }
+            ]
+        }).sort({ asc: -1 });
+        console.log("sepc", specialOffers)
+        return specialOffers;
+
+        // await Service.updateOne(filter, data)
+        // const serviceSend = await Service.findOne({ _id: filter._id });
+        // return serviceSend;
+    }
 
 }
 

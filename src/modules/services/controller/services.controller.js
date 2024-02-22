@@ -42,12 +42,20 @@ class ServiceController {
     }
 
     updateService = async (req, res) => {
-        const data = req.body;
-        const { _id } = data;
+        let data = req.body;
+        const { _id, priceOffer, specialOffer } = data;
+        const socket = req.app.get('socket_io');
         delete data._id;
         try {
-            const update = await this.serviceService.updateService({ _id }, data);
-            return res.status(200).send(update);
+            specialOffer && (data = { ...data, dateOffer: new Date() });
+            await this.serviceService.updateService({ _id }, data);
+            if (priceOffer && specialOffer) {
+                const notifications = await this.serviceService.notifySpecialOffer();
+                if (notifications.length)
+                    socket.emit("notifySpecialOffer", notifications)
+            }
+
+            res.status(200).send({ update: 'success' });
         } catch (error) {
             console.log(error);
             return res.status(500).send("Une erreur est survenue");
