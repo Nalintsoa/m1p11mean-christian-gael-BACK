@@ -39,7 +39,7 @@ const serviceService = new ServiceService();
 io.on("connection", (socket) => {
 	socket.on("specialOffer", (data) => {
 		const notification = serviceService.notifySpecialOffer(data);
-		socket.emit("notifySpecialOffer", { notification })
+		socket.emit("notifySpecialOffer", notification)
 
 	})
 

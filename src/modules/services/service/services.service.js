@@ -31,12 +31,16 @@ class ServiceService {
         const { _id, oldPrice } = data;
 
         if (_id) {
+
             const service = await Service.findOne({ _id });
+            console.log('service', service)
+            console.log("oldPrice", oldPrice)
             if (oldPrice !== service.price) {
                 await Service.updateOne({ _id }, { oldPrice })
+                const serviceSend = await Service.findOne({ _id });
+                return serviceSend;
             }
-            const serviceSend = await service.findOne({ _id });
-            return serviceSend;
+
         } else {
             const lastCreated = await Service.findOne({ specialOffer: true }).sort({ _id: -1 });
 
