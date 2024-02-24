@@ -59,10 +59,13 @@ class ServiceController {
                 });
 
                 let isThereAnyUpdates = false;
-                if (newOffer)
+                if (newOffer && oldService)
                     isThereAnyUpdates = newOffer.priceOffer !== oldService.priceOffer ||
                         (newOffer.startOffer).toString() !== (oldService.startOffer).toString() ||
-                        (newOffer.endOffer).toString() !== (oldService.endOffer).toString()
+                        (newOffer.endOffer).toString() !== (oldService.endOffer).toString();
+
+                if (newOffer && !oldService)
+                    isThereAnyUpdates = true;
 
                 if (notifications.length && newOffer && isThereAnyUpdates)
                     socket.emit("notifySpecialOffer", notifications)
