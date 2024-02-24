@@ -9,5 +9,7 @@ router.get("/:id", customerController.getCustomer);
 router.post("/login", customerController.customerLogin);
 router.post("/logout", customerController.customerLogout);
 router.post("/addOrRemoveServiceToPreferences", customerController.addOrRemoveServiceToPreferences);
+router.get('/getFavoriteEmployees/:customer', customerController.getFavoriteEmployees);
+router.post('/addOrRemoveEmployeeAsFavorite', customerController.addOrRemoveEmployeeAsFavorite);
 
 module.exports = router;

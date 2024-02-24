@@ -26,6 +26,10 @@ const CustomerSchema = new Schema({
 	preferences: {
 		type: [Schema.Types.ObjectId],
 		default: []
+	},
+	favoriteEmployees: {
+		type: [Schema.Types.ObjectId],
+		default: [],
 	}
 });
 
