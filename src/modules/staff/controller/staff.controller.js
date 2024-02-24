@@ -53,6 +53,19 @@ class StaffController {
 			res.status(500).send("Impossible d'avoir les informations du personnel");
 		}
 	}
+
+	getStaffBySpeciality = async (req, res) => {
+		const { customer, speciality, prefType } = req.body;
+
+		const isFavorite = prefType === "Favoris";
+		try{
+			const result = await this.staffService.getStaffBySpeciality(speciality);
+			return res.status(200).send(result);
+		} catch (err) {
+			res.status(500).send("Failed to list staffs");
+		}
+
+	}
 }
 
 module.exports = StaffController;

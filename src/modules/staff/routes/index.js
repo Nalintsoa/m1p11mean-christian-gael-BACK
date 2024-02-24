@@ -15,5 +15,6 @@ router.post("/", verifyToken, staffController.createStaff);
 router.get("/:id", verifyToken, staffController.getStaff);
 router.patch("/", verifyToken, staffController.updateStaff);
 router.post("/delete", verifyToken, staffController.deleteStaff);
+router.post("/getStaffBySpeciality", staffController.getStaffBySpeciality);
 
 module.exports = router;

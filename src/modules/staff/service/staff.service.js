@@ -47,6 +47,13 @@ class StaffService {
 		const response = await Staff.findById(id);
 		return response;
 	}
+
+	getStaffBySpeciality = async (speciality) => {
+		const getAll = speciality === "Tout";
+		let response = [];
+		response = getAll ? await Staff.find() : await Staff.find({ speciality });
+		return response;
+	}
 }
 
 module.exports = StaffService; 

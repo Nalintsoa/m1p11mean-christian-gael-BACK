@@ -61,7 +61,6 @@ class CustomerService {
     addOrRemoveServiceToPreferences = async (idCustomer, service) => {
         try {
             const addOne = await Customer.findById(idCustomer).select('preferences');
-            console.log(addOne);
 
             let prefs = addOne.preferences || [];
             const serviceId = new mongoose.Types.ObjectId(service);
@@ -70,12 +69,44 @@ class CustomerService {
                 prefs.push(serviceId);
             } else {
                 prefs = prefs.filter((item) => {
-                    console.log(item.toString() === service);
                     return item.toString() !== service
                 });
             }
             const result = await Customer.findByIdAndUpdate(idCustomer, { preferences: prefs }).lean();
             return {...result, preferences: prefs};
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    // TODO
+    getFavoriteEmployees = async (customerId) => {
+        try {
+            const result = Customer.findById(customerId).select('favoriteEmployees');
+            return result
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    addOrRemoveEmployeeAsFavorite = async (customerId, employeeId) => {
+        try {
+            const favorites = await Customer.findById(customerId).select('favoriteEmployees');
+
+            let prefs = favorites.favoriteEmployees || [];
+
+            const employee = new mongoose.Types.ObjectId(employeeId);
+
+            if (prefs.length === 0 || !prefs?.includes(employee)) {
+                prefs.push(employee);
+            } else {
+                prefs = prefs.filter((item) => {
+                    return item.toString() !== employeeId
+                });
+            }
+
+            const result = await Customer.findByIdAndUpdate(customerId, { favoriteEmployees: prefs }).lean();
+            return { ...result, favoriteEmployees: prefs};
         } catch (err) {
             console.log(err);
         }

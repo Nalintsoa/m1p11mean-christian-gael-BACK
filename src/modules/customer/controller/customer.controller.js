@@ -110,6 +110,27 @@ class CustomerController {
             res.status(500).send('Failed to add to preferences');
         }
     }
+
+    getFavoriteEmployees = async (req, res) => {
+        try {
+            const { customer } = req.params;
+            const result = await this.customerService.getFavoriteEmployees(customer);
+            res.status(200).send(result);
+        } catch (error) {
+            res.status(500).send('Failed to list favorite employees');
+        }
+    }
+
+    addOrRemoveEmployeeAsFavorite = async (req, res) => {
+        try {
+            const { customer, employee } = req.body;
+            
+            const result = await this.customerService.addOrRemoveEmployeeAsFavorite(customer, employee);
+            res.status(200).send({ result, message: "Favorite employees list updated" });
+        } catch (error) {
+            res.status(500).send('Failed to update favorite employees list');
+        }
+    }
 }
 
 module.exports = CustomerController;
