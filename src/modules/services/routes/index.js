@@ -1,15 +1,17 @@
 const { Router } = require("express");
 
-const ServiceController = require("@modules/services/controller/services.controller")
+const ServiceController = require("@modules/services/controller/services.controller");
+const { verifyToken } = require("../../../middlewares/verifyToken");
 
 const router = Router();
 
 const serviceController = new ServiceController();
 
-router.get("/", serviceController.getAllService);
-router.post("/", serviceController.createService);
-router.get("/:id", serviceController.getService);
-router.patch("/", serviceController.updateService);
-router.delete("/", serviceController.deleteService);
+router.get("/", verifyToken, serviceController.getAllService);
+router.post("/", verifyToken, serviceController.createService);
+router.get("/one/:id", verifyToken, serviceController.getService);
+router.patch("/", verifyToken, serviceController.updateService);
+router.delete("/", verifyToken, serviceController.deleteService);
+router.get("/notifOffre", verifyToken, serviceController.getNotifications)
 
 module.exports = router;

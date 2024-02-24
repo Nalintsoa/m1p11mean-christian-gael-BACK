@@ -46,12 +46,25 @@ class ServiceController {
         const { _id, priceOffer, specialOffer } = data;
         const socket = req.app.get('socket_io');
         delete data._id;
+        specialOffer && (data = { ...data, dateOffer: new Date(), seenOffer: [] });
         try {
-            specialOffer && (data = { ...data, dateOffer: new Date() });
+
+            const oldService = await this.serviceService.getService({ _id });
             await this.serviceService.updateService({ _id }, data);
             if (priceOffer && specialOffer) {
                 const notifications = await this.serviceService.notifySpecialOffer();
-                if (notifications.length)
+                const newOffer = await this.serviceService.getService({
+                    _id,
+                    endOffer: { $gte: new Date() },
+                });
+
+                let isThereAnyUpdates = false;
+                if (newOffer)
+                    isThereAnyUpdates = newOffer.priceOffer !== oldService.priceOffer ||
+                        (newOffer.startOffer).toString() !== (oldService.startOffer).toString() ||
+                        (newOffer.endOffer).toString() !== (oldService.endOffer).toString()
+
+                if (notifications.length && newOffer && isThereAnyUpdates)
                     socket.emit("notifySpecialOffer", notifications)
             }
 
@@ -74,6 +87,28 @@ class ServiceController {
         }
 
     }
+
+    getNotifications = async (req, res) => {
+        const customer = req.userId;
+
+        try {
+            const response = await this.serviceService.notifySpecialOffer(customer);
+            res.status(200).send(response);
+
+        } catch (error) {
+            console.log(error)
+            res.status(500).send(error);
+        }
+    };
+
+    seenNotifications = async (req, res) => {
+        try {
+
+        } catch (error) {
+
+        }
+    }
+
 
 
 }
