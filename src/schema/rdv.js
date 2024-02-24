@@ -28,7 +28,16 @@ const rdvSchema = new Schema({
     },
     rappel: {
         type: Date,
-        required:false
+        required: false
+    },
+    price: {
+        type: Number
+    },
+    commission: {
+        type: Number
+    },
+    specialOffer: {
+        type: Boolean
     }
 
 });

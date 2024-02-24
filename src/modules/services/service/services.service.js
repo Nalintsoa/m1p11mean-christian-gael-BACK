@@ -33,14 +33,10 @@ class ServiceService {
             $or: [
                 { seenOffer: { $nin: [userId] } },
                 { seenOffer: { $exists: false } }
-            ]
-        }).sort({ asc: -1 });
-        console.log("sepc", specialOffers)
+            ],
+            endOffer: { $gte: new Date() }
+        }).sort({ dateOffer: -1 });
         return specialOffers;
-
-        // await Service.updateOne(filter, data)
-        // const serviceSend = await Service.findOne({ _id: filter._id });
-        // return serviceSend;
     }
 
 }
