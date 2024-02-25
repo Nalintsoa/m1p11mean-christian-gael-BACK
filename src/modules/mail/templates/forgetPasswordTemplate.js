@@ -49,7 +49,7 @@ const forgetPasswordTemplate = (customer, temporaryPassword) => {
                     <p style="line-height: 170%;">Mot de passe temporaire : ${temporaryPassword}</p>
                     <p style="line-height: 170%;">
                       Nous vous recommandons de vous connecter dès que possible et de mettre à jour votre mot de passe.
-                      Si vous n'avez pas effectué cette demande ou si vous avez des questions, n'hésitez pas à nous contacter ou en répondant à ce message.
+                      Si vous n'avez pas effectué cette demande ou si vous avez des questions, n'hésitez pas à nous contacter ou répondre à ce message.
                       </p>
                     <p style="line-height: 170%;">
                       Nous vous remercions de votre compréhension et de votre coopération.

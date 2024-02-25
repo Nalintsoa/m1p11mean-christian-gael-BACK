@@ -5,6 +5,7 @@ const makeId = require("../../../utils/generateRandomPassword");
 const Customer = require("../../../schema/customer");
 const forgetPasswordTemplate = require("../templates/forgetPasswordTemplate");
 const bcrypt = require("bcryptjs");
+const path = require("path");
 
 class MailService {
 	constructor(){
@@ -36,7 +37,6 @@ class MailService {
 		}
 		
 		try {
-			console.log(mailOptions);
 			await this.transporter.sendMail(mailOptions);
 			console.log('mail Sent to', to);
 		} catch (err){
@@ -47,9 +47,11 @@ class MailService {
 	sendAlertRdvMail = async (rdv)	=> {
 		const { date, startHour, customer, service, employee } = rdv;
 
+		const imagePath = path.join(__dirname.replace(/src[\\/]modules[\\/]mail[\\/]service/, 'mailImages'), 'mail-logo.png');
+
 		const attachments = [{
 			filename: 'mail-logo.png',
-			path: `${__dirname.replace("src/modules/mail/service", "mailImages")}/mail-logo.png`,
+			path: `${imagePath}`,
 			cid: 'logo1'
 		}]
 		const alertRdvHTMLContent = alertRdvTemplate(customer.pseudo, date, startHour, service.name, employee.name);
@@ -70,9 +72,11 @@ class MailService {
 
 			await Customer.findOneAndUpdate({ email: customerEmail }, { temporaryPassword: hashedPassword });
 
+			const imagePath = path.join(__dirname.replace(/src[\\/]modules[\\/]mail[\\/]service/, 'mailImages'), 'mail-logo.png');
+
 			const attachments = [{
 				filename: 'mail-logo.png',
-				path: `${__dirname.replace("src/modules/mail/service", "mailImages")}/mail-logo.png`,
+				path: `${imagePath}`,
 				cid: 'logo1'
 			}];
 
@@ -100,7 +104,9 @@ class MailService {
 					pass: process.env.FORGET_PASSWORD_MAIL_KEY,
 				},
 			});
+
 			await transporter.sendMail(mailOptions);
+			console.log('mail sent to', customerEmail);
 			return updatedCustomer;
 		} catch (err) {
 			console.log(err);
