@@ -2,7 +2,14 @@ const bcrypt = require('bcryptjs');
 const Customer = require('../../../schema/customer');
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const generateCreditCardNumber = require('../../../utils/generateCardNumber');
 class CustomerService {
+
+    updateCustomer = async (filter, data) => {
+        const response = await Customer.updateOne(filter, data);
+        return response;
+    }
+
     getCustomer = async (idCustomer) => {
         try {
             const result = await Customer.findById(idCustomer);
@@ -21,7 +28,10 @@ class CustomerService {
                 phoneNumber: phoneNumber,
                 address: address,
                 email: email,
-                password: hashedPassword
+                password: hashedPassword,
+                solde: 50000,
+                cardNumber: generateCreditCardNumber()
+
             });
             const response = await customer.save();
             return response;
@@ -31,8 +41,8 @@ class CustomerService {
     }
 
     customerLogin = async (email, password) => {
-        const customer = await Customer.findOne({ email:email });
-        
+        const customer = await Customer.findOne({ email: email });
+
         if (!customer) {
             return {
                 logged: false,
@@ -49,7 +59,7 @@ class CustomerService {
 
         // TODO use .env
         const { _id } = customer.toJSON();
-        const token = await jwt.sign({ _id, pseudo: customer.pseudo }, 'secret', {expiresIn: 60 * 60});
+        const token = await jwt.sign({ _id, pseudo: customer.pseudo }, 'secret', { expiresIn: 60 * 60 });
 
         return {
             logged: true,
@@ -73,7 +83,7 @@ class CustomerService {
                 });
             }
             const result = await Customer.findByIdAndUpdate(idCustomer, { preferences: prefs }).lean();
-            return {...result, preferences: prefs};
+            return { ...result, preferences: prefs };
         } catch (err) {
             console.log(err);
         }
@@ -106,7 +116,7 @@ class CustomerService {
             }
 
             const result = await Customer.findByIdAndUpdate(customerId, { favoriteEmployees: prefs }).lean();
-            return { ...result, favoriteEmployees: prefs};
+            return { ...result, favoriteEmployees: prefs };
         } catch (err) {
             console.log(err);
         }

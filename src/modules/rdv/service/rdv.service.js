@@ -7,6 +7,10 @@ class RdvService {
         const response = await RDV.create(data);
         return response
     }
+    updateRdv = async (filter, data) => {
+        const response = await RDV.updateOne(filter, data);
+        return response
+    }
 
     getHistoRdv = async (data) => {
         const response = await RDV.find(data).sort({ dateBook: -1 }).populate("service").populate("employee");
@@ -53,10 +57,10 @@ class RdvService {
     getRdvWithCustomerAlert = async (idCustomer) => {
         try {
             const response = await RDV.find({ customer: idCustomer })
-              .populate("service")
-              .populate("employee");
+                .populate("service")
+                .populate("employee");
             return response;
-        } catch(err) {
+        } catch (err) {
             console.log(err);
         }
     }
