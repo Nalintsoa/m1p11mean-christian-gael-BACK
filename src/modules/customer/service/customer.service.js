@@ -2,8 +2,12 @@ const bcrypt = require('bcryptjs');
 const Customer = require('../../../schema/customer');
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const MailService = require('../../mail/service/mail.service');
 const generateCreditCardNumber = require('../../../utils/generateCardNumber');
 class CustomerService {
+    constructor(){
+        this.mailService = new MailService();
+    }
 
     updateCustomer = async (filter, data) => {
         const response = await Customer.updateOne(filter, data);
@@ -117,6 +121,36 @@ class CustomerService {
 
             const result = await Customer.findByIdAndUpdate(customerId, { favoriteEmployees: prefs }).lean();
             return { ...result, favoriteEmployees: prefs };
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    forgetPassword = async (customerEmail) => {
+        try {
+            const customer = await Customer.find({ email: customerEmail });
+
+            if (!customer) {
+                return false;
+            } else {
+                const updatedCustomer = await this.mailService.sendForgetPasswordMail(customerEmail);
+                return updatedCustomer;
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    forgetPassword = async (customerEmail) => {
+        try {
+            const customer = await Customer.find({ email: customerEmail });
+
+            if (!customer) {
+                return false;
+            } else {
+                const updatedCustomer = await this.mailService.sendForgetPasswordMail(customerEmail);
+                return updatedCustomer;
+            }
         } catch (err) {
             console.log(err);
         }
