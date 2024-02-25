@@ -11,5 +11,8 @@ router.post("/logout", customerController.customerLogout);
 router.post("/addOrRemoveServiceToPreferences", customerController.addOrRemoveServiceToPreferences);
 router.get('/getFavoriteEmployees/:customer', customerController.getFavoriteEmployees);
 router.post('/addOrRemoveEmployeeAsFavorite', customerController.addOrRemoveEmployeeAsFavorite);
+router.post('/forgetPassword', customerController.forgetPassword);
+router.post('/checkTemporaryPassword', customerController.checkTemporaryPassword);
+router.post('/updatePassword', customerController.updatePassword);
 
 module.exports = router;

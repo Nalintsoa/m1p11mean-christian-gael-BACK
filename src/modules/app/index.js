@@ -6,6 +6,8 @@ const cors = require("cors");
 const routes = require("@modules/app/routes");
 const cookieParser = require("cookie-parser");
 const { Server } = require('socket.io');
+const MailService = require('../mail/service/mail.service');
+const RdvService = require('../rdv/service/rdv.service');
 
 
 dotenv.config();
@@ -43,7 +45,6 @@ io.on("connection", (socket) => {
 
 })
 
-
 mongoose
 	.connect(process.env.MONGO_URI)
 	.then(() => {
@@ -60,6 +61,10 @@ app.use(function (req, res, next) {
 	);
 	next();
 });
+
+app.use("/mailImages", express.static('mailImages'));
+const rvdService = new RdvService();
+// rvdService.checkMailToSend();
 
 app.use("/", routes);
 

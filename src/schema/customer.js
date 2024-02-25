@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const makeId = require("../utils/generateRandomPassword");
 const { model, Schema } = mongoose;
 
 const CustomerSchema = new Schema({
@@ -36,6 +37,10 @@ const CustomerSchema = new Schema({
 	},
 	cardNumber: {
 		type: String
+	},
+	temporaryPassword: {
+		type: String,
+		default: makeId(10),
 	}
 });
 

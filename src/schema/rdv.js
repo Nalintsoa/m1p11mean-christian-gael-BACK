@@ -45,8 +45,15 @@ const rdvSchema = new Schema({
     paimentArray: {
         type: Array,
 
+    },
+    isAlerted: {
+        type: Boolean,
+        default: false
+    },
+    isMailSent: {
+        type: Boolean,
+        default: false,
     }
-
 });
 
 const RDV = model("rdv", rdvSchema);
