@@ -38,6 +38,13 @@ const rdvSchema = new Schema({
     },
     specialOffer: {
         type: Boolean
+    },
+    amountPaid: {
+        type: Number
+    },
+    paimentArray: {
+        type: Array,
+
     }
 
 });

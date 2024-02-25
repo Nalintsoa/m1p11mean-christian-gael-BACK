@@ -30,6 +30,12 @@ const CustomerSchema = new Schema({
 	favoriteEmployees: {
 		type: [Schema.Types.ObjectId],
 		default: [],
+	},
+	solde: {
+		type: Number,
+	},
+	cardNumber: {
+		type: String
 	}
 });
 

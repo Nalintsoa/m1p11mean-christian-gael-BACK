@@ -73,12 +73,6 @@ class CustomerController {
                     }
                 }
 
-                // Notification when logged_in
-                const serviceService = new ServiceService();
-                const notification = await serviceService.notifySpecialOffer();
-                if (notification.length)
-                    socketIo.emit("notifySpecialOffer", notification);
-
                 res.status(200).send({
                     message: 'logged in',
                     customer,
@@ -124,7 +118,7 @@ class CustomerController {
     addOrRemoveEmployeeAsFavorite = async (req, res) => {
         try {
             const { customer, employee } = req.body;
-            
+
             const result = await this.customerService.addOrRemoveEmployeeAsFavorite(customer, employee);
             res.status(200).send({ result, message: "Favorite employees list updated" });
         } catch (error) {
