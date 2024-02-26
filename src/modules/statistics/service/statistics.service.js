@@ -3,7 +3,8 @@ const RDV = require("../../../schema/rdv");
 const getNumberDaysInMonth = require("../../../utils/getNumberDaysInMonth");
 
 class StatisticsService {
-    statisticEmployee = async (type, date) => {
+
+    getFilter(type, date) {
         let filter;
         let numberDay;
         if (type === "month") {
@@ -31,6 +32,12 @@ class StatisticsService {
             filter = { date }
 
         }
+
+        return { filter, numberDay }
+    }
+
+    statisticEmployee = async (type, date) => {
+        const { filter, numberDay } = this.getFilter(type, date);
 
         const staffs = await Staff.find({ role: "employee" });
         const result = [];
@@ -60,6 +67,35 @@ class StatisticsService {
             result.push(dataToPush);
 
         };
+
+        return result;
+
+    }
+
+
+
+    statisticBooking = async (type, date) => {
+        const { filter } = this.getFilter(type, date);
+        const rdvs = await RDV.find({ ...filter }).count();
+
+        return rdvs
+
+    }
+
+    statisticBusiness = async (type, date) => {
+        const { filter } = this.getFilter(type, date);
+        const rdvs = await RDV.find({ ...filter }).populate('service');
+
+        console.log('rdvs', rdvs)
+
+        let result = 0;
+
+        for (let i = 0; i < rdvs.length; i++) {
+            const CADay = rdvs[i].price - rdvs[i].service.commission;
+            console.log('rdvs[i].price', rdvs[i].price, 'rdvs[i].service.commission', rdvs[i].service.commission)
+            result += CADay;
+
+        }
 
         return result;
 
