@@ -21,7 +21,7 @@ class StatisticsController {
         const { type, date } = req.query;
         try {
             const response = await this.statisticsService.statisticBooking(type, date);
-            res.status(200).send({ count: response })
+            res.status(200).send(response)
         } catch (error) {
             console.log(error)
             res.status(500).send(error);
@@ -33,7 +33,23 @@ class StatisticsController {
         const { type, date } = req.query;
         try {
             const response = await this.statisticsService.statisticBusiness(type, date);
-            res.status(200).send({ amount: response })
+            const data = [response];
+            const labels = [date];
+            res.status(200).send({ data, labels })
+        } catch (error) {
+            console.log(error)
+            res.status(500).send(error);
+
+        }
+
+    }
+
+    statisticBenefice = async (req, res) => {
+        const filterData = req.query;
+
+        try {
+            const response = await this.statisticsService.statisticBenefice(filterData);
+            res.status(200).send(response)
         } catch (error) {
             console.log(error)
             res.status(500).send(error);

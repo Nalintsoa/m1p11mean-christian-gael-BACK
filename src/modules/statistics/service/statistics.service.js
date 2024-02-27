@@ -78,15 +78,17 @@ class StatisticsService {
         const { filter } = this.getFilter(type, date);
         const rdvs = await RDV.find({ ...filter }).count();
 
-        return rdvs
+        const data = [rdvs];
+
+        const labels = [date]
+
+        return { data, labels }
 
     }
 
     statisticBusiness = async (type, date) => {
         const { filter } = this.getFilter(type, date);
         const rdvs = await RDV.find({ ...filter }).populate('service');
-
-        console.log('rdvs', rdvs)
 
         let result = 0;
 
@@ -97,7 +99,25 @@ class StatisticsService {
 
         }
 
+
         return result;
+
+    }
+
+    statisticBenefice = async (filterData) => {
+
+        const { type, date, sale, rent, piece, other } = filterData;
+        const amountBusiness = await this.statisticBusiness(type, date);
+        console.log("service22", amountBusiness)
+        const sumSpending = Number(sale) + Number(rent) + Number(piece) + Number(other);
+
+        const benefice = amountBusiness - sumSpending;
+
+        const labels = ["Salaire", "Loyer", "Achat de pièces", "Autres dépenses", "Bénéfice"];
+
+        const data = [+sale, +rent, +piece, +other, benefice]
+
+        return { labels, data };
 
     }
 
