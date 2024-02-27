@@ -73,8 +73,20 @@ class RdvController {
         try {
             const result = await this.rdvService.planningPerMonth(year, monthWithTwoDigits, staff);
             res.status(200).send(result);
-        }catch(err) {
+        } catch (err) {
             res.status(500).send(err);
+        }
+    }
+
+    taskPerDay = async (req, res) => {
+        const employee = req.userId;
+        const { date } = req.query;
+
+        try {
+            const response = await this.rdvService.getTasksDay(employee, date);
+            res.status(200).send(response);
+        } catch (err) {
+            res.status(500).send(err)
         }
     }
 }
