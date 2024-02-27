@@ -72,13 +72,17 @@ const planningPerMonthAggregation = (firstDayOfMonth, lastDayOfMonth, staff) => 
 		},
 		{
 			$project: {
+				_id: 1,
+				amountPaid: 1,
 				date: 1,
 				startHour: 1,
 				endHour:1,
+				price:1,
 				customer: {
 					_id: 1,
 					pseudo: 1,
 					email: 1,
+					phoneNumber: 1,
 				},
 				service: 1,
 			}

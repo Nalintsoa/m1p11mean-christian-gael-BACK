@@ -89,6 +89,17 @@ class RdvController {
             res.status(500).send(err)
         }
     }
+
+    getById = async (req, res) => {
+        const { id } = req.query;
+
+        try {
+            const result = await this.rdvService.getById(id);
+            res.status(200).send(result);
+        } catch (error) {
+            res.status(500).send(error);
+        }
+    }
 }
 
 module.exports = RdvController;

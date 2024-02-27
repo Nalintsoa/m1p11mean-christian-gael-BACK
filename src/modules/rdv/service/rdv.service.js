@@ -119,14 +119,20 @@ class RdvService {
           formattedArray.push({
             hour: j,
             date: moment(new Date(planned[i].date)).format('YYYY-MM-DD'),
+            _id: planned[i]._id,
+            amountPaid: planned[i].amountPaid,
+            price: planned[i].price,
+            startHour: planned[i].startHour,
+            endHour: planned[i].endHour,
             serviceId: planned[i].service._id,
             serviceName: planned[i].service.name,
             customerId: planned[i].customer._id,
             customerName: planned[i].customer.pseudo,
             customerMail: planned[i].customer.email,
-            price: planned[i].service.price,
+            customerPhone: planned[i].customer.phoneNumber,
             commission: planned[i].service.commission,
             priceOffer: planned[i].service.priceOffer,
+            serviceDuration: planned[i].service.duration,
           });
         }
       }
@@ -175,6 +181,13 @@ class RdvService {
       .sort({ startHour: 1 });
 
     return rdvDay;
+  }
+
+  getById = async (id) => {
+    const result = await RDV.findById(id)
+      .populate('customer')
+      .populate('service');
+    return result;
   }
 }
 
