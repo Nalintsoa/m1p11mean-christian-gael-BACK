@@ -60,6 +60,23 @@ class RdvController {
             res.status(500).send(error);
         }
     }
+
+    planningPerMonth = async (req, res) => {
+        const { year, month, staff } = req.query;
+
+        const monthInt = +month
+        const monthWithTwoDigits = monthInt.toLocaleString('en-US', {
+            minimumIntegerDigits: 2,
+            useGrouping: false
+        });
+
+        try {
+            const result = await this.rdvService.planningPerMonth(year, monthWithTwoDigits, staff);
+            res.status(200).send(result);
+        }catch(err) {
+            res.status(500).send(err);
+        }
+    }
 }
 
 module.exports = RdvController;
