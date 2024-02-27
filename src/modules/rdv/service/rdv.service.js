@@ -5,17 +5,17 @@ const MailService = require("../../mail/service/mail.service");
 const planningPerMonthAggregation = require("../pipelines/planningPerMonthAggregation");
 
 class RdvService {
-  constructor(){
-		this.mailService = new MailService();
-	}
+  constructor() {
+    this.mailService = new MailService();
+  }
   createRdv = async (data) => {
     const response = await RDV.create(data);
     return response;
   };
-    updateRdv = async (filter, data) => {
-        const response = await RDV.updateOne(filter, data);
-        return response
-    }
+  updateRdv = async (filter, data) => {
+    const response = await RDV.updateOne(filter, data);
+    return response
+  }
 
   getHistoRdv = async (data) => {
     const response = await RDV.find(data)
@@ -93,11 +93,11 @@ class RdvService {
         return rappelDate === todayDate;
       });
 
-			if (rdvToRemind && rdvToRemind?.length > 0) {
-				for (let i = 0; i < rdvToRemind.length; i++) {
-					await this.mailService.sendAlertRdvMail(rdvToRemind[i]);
-				}
-			}
+      if (rdvToRemind && rdvToRemind?.length > 0) {
+        for (let i = 0; i < rdvToRemind.length; i++) {
+          await this.mailService.sendAlertRdvMail(rdvToRemind[i]);
+        }
+      }
     } catch (err) {
       console.log(err);
     }
@@ -142,9 +142,9 @@ class RdvService {
               (item) =>
                 item.hour === j &&
                 item.date ===
-                  moment(new Date(`${currentYear}-${month}-${i}`)).format(
-                    'YYYY-MM-DD'
-                  )
+                moment(new Date(`${currentYear}-${month}-${i}`)).format(
+                  'YYYY-MM-DD'
+                )
             ),
             ...formattedArray.find(
               (item) =>
@@ -161,12 +161,20 @@ class RdvService {
         group[date].push(rdv);
         return group;
       }, {});
-      
+
       return groupByDate
 
     } catch (error) {
       console.log(error);
     }
+  }
+
+  getTasksDay = async (employee, date) => {
+    const rdvDay = await RDV.find({ employee, date }).populate('service')
+      .populate('customer', 'pseudo')
+      .sort({ startHour: 1 });
+
+    return rdvDay;
   }
 }
 
