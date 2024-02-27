@@ -8,7 +8,6 @@ class StatisticsService {
         let filter;
         let numberDay;
         if (type === "month") {
-            console.log("data", date)
             const month = date.split("-")[1];
             const year = date.split("-")[0];
 
@@ -94,7 +93,6 @@ class StatisticsService {
 
         for (let i = 0; i < rdvs.length; i++) {
             const CADay = rdvs[i].price - rdvs[i].service.commission;
-            console.log('rdvs[i].price', rdvs[i].price, 'rdvs[i].service.commission', rdvs[i].service.commission)
             result += CADay;
 
         }
@@ -108,7 +106,7 @@ class StatisticsService {
 
         const { type, date, sale, rent, piece, other } = filterData;
         const amountBusiness = await this.statisticBusiness(type, date);
-        console.log("service22", amountBusiness)
+
         const sumSpending = Number(sale) + Number(rent) + Number(piece) + Number(other);
 
         const benefice = amountBusiness - sumSpending;
