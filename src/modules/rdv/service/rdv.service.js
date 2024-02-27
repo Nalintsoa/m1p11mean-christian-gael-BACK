@@ -2,6 +2,7 @@ const moment = require("moment");
 const RDV = require("../../../schema/rdv");
 const Staff = require("../../../schema/staff");
 const MailService = require("../../mail/service/mail.service");
+const planningPerMonthAggregation = require("../pipelines/planningPerMonthAggregation");
 
 class RdvService {
   constructor(){
@@ -101,6 +102,72 @@ class RdvService {
       console.log(err);
     }
   };
+
+  planningPerMonth = async (currentYear, month, staff) => {
+    try {
+      const firstDayOfMonth = new Date(`${currentYear}-${month}-01`);
+      const daysInMonth = moment(firstDayOfMonth).daysInMonth();
+      const lastDayOfMonth = new Date(`${currentYear}-${month}-${daysInMonth}`);
+
+      const planned = await RDV.aggregate(planningPerMonthAggregation(firstDayOfMonth, lastDayOfMonth, staff));
+
+      const formattedArray = [];
+      const finalArray = [];
+
+      for (let i = 0; i < planned.length; i++) {
+        for (let j = planned[i].startHour; j < planned[i].endHour; j++) {
+          formattedArray.push({
+            hour: j,
+            date: moment(new Date(planned[i].date)).format('YYYY-MM-DD'),
+            serviceId: planned[i].service._id,
+            serviceName: planned[i].service.name,
+            customerId: planned[i].customer._id,
+            customerName: planned[i].customer.pseudo,
+            customerMail: planned[i].customer.email,
+            price: planned[i].service.price,
+            commission: planned[i].service.commission,
+            priceOffer: planned[i].service.priceOffer,
+          });
+        }
+      }
+
+      for (let i = 1; i <= daysInMonth; i++) {
+        for (let j = 8; j < 18; j++) {
+          finalArray.push({
+            date: moment(new Date(`${currentYear}-${month}-${i}`)).format(
+              'YYYY-MM-DD'
+            ),
+            hour: j,
+            rdvStatus: formattedArray.some(
+              (item) =>
+                item.hour === j &&
+                item.date ===
+                  moment(new Date(`${currentYear}-${month}-${i}`)).format(
+                    'YYYY-MM-DD'
+                  )
+            ),
+            ...formattedArray.find(
+              (item) =>
+                item.hour === j &&
+                item.date === moment(new Date(`${currentYear}-${month}-${i}`)).format('YYYY-MM-DD')
+            ),
+          });
+        }
+      }
+
+      const groupByDate = finalArray.reduce((group, rdv) => {
+        const { date } = rdv;
+        group[date] = group[date] ?? [];
+        group[date].push(rdv);
+        return group;
+      }, {});
+      
+      return groupByDate
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 module.exports = RdvService;

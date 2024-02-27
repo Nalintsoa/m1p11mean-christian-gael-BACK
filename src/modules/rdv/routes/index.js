@@ -10,9 +10,6 @@ routes.post("/", verifyToken, rdvController.createRDV);
 routes.get("/checkDispo", verifyToken, rdvController.checkDispo);
 routes.get("/getHisto", verifyToken, rdvController.getHistoRDV);
 routes.patch("/pay", verifyToken, rdvController.payRdv);
-
-
-
-
+routes.get("/planningPerMonth", rdvController.planningPerMonth);
 
 module.exports = routes;
