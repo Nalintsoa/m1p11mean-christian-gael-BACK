@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 const { model, Schema } = mongoose;
 
 const StaffSchema = new Schema({
+  path: {
+    type: String
+  },
   name: {
     type: String,
     required: true,
@@ -12,7 +15,7 @@ const StaffSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique:true,
+    unique: true,
   },
   phoneNumber: {
     type: String,

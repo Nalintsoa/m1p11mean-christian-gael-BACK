@@ -1,8 +1,10 @@
-const ServiceService = require("@modules/services/service/services.service")
+const ServiceService = require("@modules/services/service/services.service");
+const RdvService = require("../../rdv/service/rdv.service")
 
 class ServiceController {
     constructor() {
         this.serviceService = new ServiceService()
+        this.rdvService = new RdvService();
     }
 
     createService = async (req, res) => {
@@ -80,10 +82,14 @@ class ServiceController {
     }
 
     deleteService = async (req, res) => {
-        const data = req.body;
+        const { _id } = req.body;
         try {
-            await this.serviceService.deleteService({ _id: data._id });
-            return res.status(200).send("success");
+            const hasRdv = await this.rdvService.getRdv({ service: _id })
+            console.log("hasRdv", hasRdv)
+            if (hasRdv)
+                return res.status(409).send({ message: "Impossible de supprimer un service lie à un rendez-vous" })
+            await this.serviceService.deleteService({ _id });
+            return res.status(200).send({ message: "deleted" });
         } catch (error) {
             console.log(error);
             return res.status(500).send("Une erreur est survenue");
