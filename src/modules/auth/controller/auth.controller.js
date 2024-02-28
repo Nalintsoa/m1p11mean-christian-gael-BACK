@@ -13,11 +13,11 @@ class AuthController {
 
 			// TODO use .env
 			if (logged) {
-				res.cookie("jwt_token", token, {
-					maxAge: 1 * 60 * 60 * 1000,
-					sameSite: 'None',
-					secure: true
-				});
+				// res.cookie("jwt_token", token, {
+				// 	maxAge: 1 * 60 * 60 * 1000,
+				// 	sameSite: 'None',
+				// 	secure: true
+				// });
 
 				res.status(200).send({
 					message: 'logged in',
