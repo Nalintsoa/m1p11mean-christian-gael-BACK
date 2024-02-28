@@ -22,7 +22,7 @@ class AuthService {
 
         // TODO use .env
         const { _id } = staff.toJSON();
-        const token = await jwt.sign({ _id, username: staff.name }, 'secret', {expiresIn: 60 * 60});
+        const token = await jwt.sign({ _id, username: staff.name, role: staff.role }, 'secret', {expiresIn: 60 * 60});
 
         return {
             logged: true,
