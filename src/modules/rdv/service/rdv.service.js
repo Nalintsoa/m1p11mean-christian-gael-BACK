@@ -58,8 +58,11 @@ class RdvService {
 
       obj["7"] = { firstName: employees[i].firstName };
 
+      const startWork = parseInt(employees[i].startHour.split(':')[0], 10);
+      const endWork = parseInt(employees[i].endHour.split(':')[0], 10);
+
       for (let k = 8; k < 17; k++) {
-        if (tabsRdv.includes(k)) {
+        if (tabsRdv.includes(k) || k < startWork || k >= endWork) {
           obj[`${k}`] = { value: k, dispo: false, _id: employees[i]._id };
         } else {
           obj[`${k}`] = { value: k, dispo: true, _id: employees[i]._id };
