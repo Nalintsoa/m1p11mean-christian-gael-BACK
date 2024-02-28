@@ -63,7 +63,7 @@ const planningPerMonthAggregation = (firstDayOfMonth, lastDayOfMonth, staff) => 
 						dateRdv : {
 							// $gte: new Date(),
 							$gte: new Date(firstDayOfMonth),
-							$lt: new Date(lastDayOfMonth)
+							$lte: new Date(lastDayOfMonth)
 						},
 						"staff._id": new ObjectId(staff)
 					},
