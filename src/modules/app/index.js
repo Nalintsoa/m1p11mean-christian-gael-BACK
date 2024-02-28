@@ -18,7 +18,7 @@ const PORT = process.env.PORT;
 app.use(cors({
 	credentials: true,
 	exposedHeaders: ["token"],
-	origin: "http://localhost:4200",
+	origin: "*",
 	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 	preflightContinue: false,
 }));
