@@ -18,7 +18,7 @@ const PORT = process.env.PORT;
 app.use(cors({
 	credentials: true,
 	exposedHeaders: ["token"],
-	origin: "*",
+	origin: "https://m1p11mean-christian-gael-md35.onrender.com",
 	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 	preflightContinue: false,
 }));
