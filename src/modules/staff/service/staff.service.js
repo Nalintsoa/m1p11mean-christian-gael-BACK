@@ -18,7 +18,7 @@ class StaffService {
 	}
 
 	getAllStaff = async () => {
-		const response = await Staff.find({});
+		const response = await Staff.find({ role: "employee" });
 		return response;
 	}
 
@@ -51,7 +51,7 @@ class StaffService {
 	getStaffBySpeciality = async (speciality) => {
 		const getAll = speciality === "Tout";
 		let response = [];
-		response = getAll ? await Staff.find() : await Staff.find({ speciality });
+		response = getAll ? await Staff.find({ role: "employee" }) : await Staff.find({ speciality, role: "employee" });
 		return response;
 	}
 }
