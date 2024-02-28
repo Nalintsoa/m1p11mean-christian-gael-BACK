@@ -15,8 +15,7 @@ class AuthController {
 			if (logged) {
 				res.cookie("jwt_token", token, {
 					maxAge: 1 * 60 * 60 * 1000,
-					sameSite: 'Lax',
-					secure: false
+					httpOnly: false
 				});
 
 				res.status(200).send({

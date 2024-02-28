@@ -40,8 +40,7 @@ class CustomerController {
             if (logged) {
                 res.cookie("client_token", token, {
                     maxAge: 1 * 60 * 60 * 1000,
-                    sameSite: 'Lax',
-                    secure: false
+                    httpOnly: false
                 });
 
                 const alertCustomer = await this.rdvService.getRdvWithCustomerAlert(customer._id);
