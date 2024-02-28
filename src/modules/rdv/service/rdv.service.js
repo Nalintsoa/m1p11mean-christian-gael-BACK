@@ -8,6 +8,12 @@ class RdvService {
   constructor() {
     this.mailService = new MailService();
   }
+
+  getRdv = async (filter) => {
+    const response = await RDV.findOne(filter);
+    return response;
+  }
+
   createRdv = async (data) => {
     const response = await RDV.create(data);
     return response;

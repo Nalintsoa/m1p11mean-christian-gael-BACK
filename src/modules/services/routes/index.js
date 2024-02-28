@@ -11,7 +11,7 @@ router.get("/", verifyToken, serviceController.getAllService);
 router.post("/", verifyToken, serviceController.createService);
 router.get("/one/:id", verifyToken, serviceController.getService);
 router.patch("/", verifyToken, serviceController.updateService);
-router.delete("/", verifyToken, serviceController.deleteService);
+router.post("/delete", verifyToken, serviceController.deleteService);
 router.get("/notifOffre", verifyToken, serviceController.getNotifications)
 
 module.exports = router;
