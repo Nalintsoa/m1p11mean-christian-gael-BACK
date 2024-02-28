@@ -16,7 +16,7 @@ class AuthController {
 				res.cookie("jwt_token", token, {
 					maxAge: 1 * 60 * 60 * 1000,
 					sameSite: 'None',
-					secure: false
+					secure: true
 				});
 
 				res.status(200).send({
